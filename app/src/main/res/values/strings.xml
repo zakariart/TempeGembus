@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Tempe Gembus</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_beranda">Beranda</string>
+    <string name="title_konseling">Konseling</string>
+    <string name="title_profil">Profil</string>
+    <string name="keluar"><u>Keluar</u></string>
+    <string name="ubah"><u>Ubah Profil</u></string>
+    <string name="daftar"><u>Daftar di sini</u></string>
+    <string name="informedconsent">Kami akan mengirimkan lembar persetujuan kepada orang tua dari siswa/anak bernama nama ke email ortu@gmail.com</string>
+
+    <string name="bantuan">Bantuan penggunaan aplikasi</string>
+    <string name="tentang">Tentang aplikasi</string>
+</resources>
