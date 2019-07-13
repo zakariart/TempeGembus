@@ -84,6 +84,11 @@ public class ProfilePsikologActivity extends AppCompatActivity {
                 sipp.setText(user.getNip());
                 lokasi_psi.setText(user.getLokasi());
 
+                if (user.getJenisAkun().equals("pengguna")) {
+                    sipp.setFloatingLabelText("NIP / NIK");
+                    btn_mulai.setVisibility(View.GONE);
+                }
+
                 if (user.getImageURL().equals("default")) {
                     profile_image_psi.setImageResource(R.drawable.foto_profil);
                 } else {

@@ -156,11 +156,9 @@ public class MessageActivity extends AppCompatActivity {
             public void onClick(View view) {
                 notify = true;
                 Intent galleryIntent = new Intent();
-                galleryIntent.setType("image/*");
+                galleryIntent.setType("video/*");
                 galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
-
                 startActivityForResult(Intent.createChooser(galleryIntent, "SELECT IMAGE"), GALLERY_PICK);
-
             }
         });
 
@@ -170,9 +168,11 @@ public class MessageActivity extends AppCompatActivity {
                 notify = true;
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-                if (intent.resolveActivity(getPackageManager()) != null) {
-                    startActivityForResult(intent, CAMERA_REQUEST_CODE);
-                }
+                startActivityForResult(Intent.createChooser(intent, "SELECT IMAGE"), GALLERY_PICK);
+
+//                if (intent.resolveActivity(getPackageManager()) != null) {
+//                    startActivityForResult(intent, CAMERA_REQUEST_CODE);
+//                }
             }
         });
 
@@ -296,7 +296,6 @@ public class MessageActivity extends AppCompatActivity {
         if (requestCode == GALLERY_PICK && resultCode == RESULT_OK
                 && data != null && data.getData() != null) {
             imageUri = data.getData();
-            btn_attach.setImageURI(imageUri);
 
             final ProgressDialog pd = new ProgressDialog(this);
             pd.setMessage("Uploading");
@@ -365,7 +364,7 @@ public class MessageActivity extends AppCompatActivity {
                                     .child(fuser.getUid());
                             chatRefReceiver.child("id").setValue(fuser.getUid());
 
-                            final String msg = "*Foto*";
+                            final String msg = "*Pesan Gambar*";
 
                             reference = FirebaseDatabase.getInstance().getReference("Users").child(fuser.getUid());
                             reference.addValueEventListener(new ValueEventListener() {

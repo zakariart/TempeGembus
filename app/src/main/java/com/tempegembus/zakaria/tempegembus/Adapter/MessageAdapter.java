@@ -1,6 +1,8 @@
 package com.tempegembus.zakaria.tempegembus.Adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -52,7 +54,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull MessageAdapter.ViewHolder holder, int position) {
 
-        Chat chat = mChat.get(position);
+        final Chat chat = mChat.get(position);
         String message_type = chat.getType();
 
 //        holder.show_message.setText(chat.getMessage());
@@ -82,7 +84,42 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             holder.layout_holder_gambar.setVisibility(View.VISIBLE);
             Glide.with(mContext).load(chat.getMessage()).into(holder.message_image_layout);
 
+            holder.message_image_layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AlertDialog.Builder mBuilder = new AlertDialog.Builder(view.getRootView().getContext());
+//                    mBuilder.setMessage(chat.getMessage());
+                    mBuilder.setTitle("Pesan Gambar");
+                    mBuilder.setIcon(R.drawable.logo);
+
+                    mBuilder.setNeutralButton("OK",
+                            new DialogInterface.OnClickListener() {
+
+                                public void onClick(DialogInterface arg0,
+                                                    int arg1) {
+
+                                }
+                            });
+
+//                    LayoutInflater inflater = LayoutInflater.from(mContext);
+//                    View mView = inflater.inflate(R.layout.dialog_custom_layout, null);
+//                    PhotoView photoView = mView.findViewById(R.id.photoview);
+//
+//                    View mView = getLayoutInflater().inflate(R.layout.dialog_custom_layout, null);
+//                    PhotoView photoView = mView.findViewById(R.id.photoview);
+//                    mBuilder.setView(mView);
+
+                    ImageView photoView = new ImageView(mContext);
+                    Glide.with(mContext).asBitmap().load(chat.getMessage()).placeholder(R.drawable.beranda_guru).into(photoView);
+                    mBuilder.setView(photoView);
+
+                    AlertDialog mDialog = mBuilder.create();
+                    mDialog.show();
+                }
+            });
+
         }
+
 
     }
 

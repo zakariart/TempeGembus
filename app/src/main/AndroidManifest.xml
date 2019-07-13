@@ -15,7 +15,7 @@
         <activity android:name=".InformedConsentActivity" />
         <activity android:name=".DataSiswaActivity" />
         <activity android:name=".UbahProfilActivity" />
-        <activity android:name=".MessageActivity" /> <!-- <activity android:name=".CariPsikolog" /> -->
+        <activity android:name=".MessageActivity" />
         <activity android:name=".TentangActivity" />
         <activity android:name=".BantuanActivity" />
         <activity android:name=".RegisterActivity" />

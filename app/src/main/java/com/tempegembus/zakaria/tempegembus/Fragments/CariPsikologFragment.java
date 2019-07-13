@@ -107,7 +107,7 @@ public class CariPsikologFragment extends Fragment {
 
                     assert user != null;
                     assert fuser != null;
-                    if (!user.getId().equals(fuser.getUid())) {
+                    if (!user.getJenisAkun().equals("pengguna")) {
 //                        if (user.getJenisAkun().equals("pengguna")) {
                         mUsers.add(user);
 //                    }
@@ -139,7 +139,7 @@ public class CariPsikologFragment extends Fragment {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         User user = snapshot.getValue(User.class);
 
-                        if (!user.getId().equals(firebaseUser.getUid())) {
+                        if (!user.getJenisAkun().equals("pengguna")) {
 //                            if (!user.getJenisAkun().equals("pengguna")) {
                             mUsers.add(user);
 //                            }

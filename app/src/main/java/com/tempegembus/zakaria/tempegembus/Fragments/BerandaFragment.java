@@ -1,5 +1,6 @@
 package com.tempegembus.zakaria.tempegembus.Fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,6 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.tempegembus.zakaria.tempegembus.Adapter.SiswaAdapter;
 import com.tempegembus.zakaria.tempegembus.Model.Siswa;
+import com.tempegembus.zakaria.tempegembus.Model.User;
 import com.tempegembus.zakaria.tempegembus.R;
 import com.tempegembus.zakaria.tempegembus.TambahDataSiswa;
 
@@ -53,11 +55,35 @@ public class BerandaFragment extends Fragment {
         readSiswas();
 
         fab = view.findViewById(R.id.fab);
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), TambahDataSiswa.class);
                 getActivity().startActivity(intent);
+            }
+        });
+
+        //fitur psikolog
+        fuser = FirebaseAuth.getInstance().getCurrentUser();
+        reference = FirebaseDatabase.getInstance().getReference("Users").child(fuser.getUid());
+
+        reference.addValueEventListener(new ValueEventListener() {
+            @SuppressLint("RestrictedApi")
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+
+                if (user.getJenisAkun().equals("psikolog")) {
+                    fab.clearAnimation();
+                    fab.setVisibility(View.GONE);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
 

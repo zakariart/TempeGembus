@@ -96,6 +96,11 @@ public class ProfileFragment extends Fragment {
                 jenkel.setText(user.getJenkel());
                 nip.setText(user.getNip());
                 lokasi.setText(user.getLokasi());
+
+                if (user.getJenisAkun().equals("psikolog")) {
+                    nip.setFloatingLabelText("SIPP");
+                }
+
                 if (user.getImageURL().equals("default")) {
                     image_profile.setImageResource(R.drawable.foto_profil);
                 } else {
@@ -157,6 +162,7 @@ public class ProfileFragment extends Fragment {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
+//        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent, IMAGE_REQUEST);
     }
 
