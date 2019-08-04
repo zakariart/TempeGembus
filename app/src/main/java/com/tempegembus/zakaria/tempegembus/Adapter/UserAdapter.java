@@ -2,6 +2,7 @@ package com.tempegembus.zakaria.tempegembus.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
@@ -77,6 +79,15 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         }
 
         if (ischat) {
+            holder.cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext, MessageActivity.class);
+                    intent.putExtra("userid", uId);
+                    intent.putExtra("username", name);
+                    mContext.startActivity(intent);
+                }
+            });
             if (user.getStatus().equals("online")) {
                 holder.img_on.setVisibility(View.VISIBLE);
                 holder.img_off.setVisibility(View.GONE);
@@ -85,19 +96,31 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
                 holder.img_off.setVisibility(View.VISIBLE);
             }
         } else {
-            holder.img_on.setVisibility(View.GONE);
-            holder.img_off.setVisibility(View.GONE);
+            if (user.getStatus().equals("online")) {
+                holder.cardView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(mContext, ProfilePsikologActivity.class);
+                        intent.putExtra("userid", uId);
+                        intent.putExtra("username", name);
+                        mContext.startActivity(intent);
+                    }
+                });
+                holder.img_on.setVisibility(View.VISIBLE);
+                holder.img_on.setColorFilter(Color.parseColor("#ffffff"));
+                holder.img_off.setVisibility(View.GONE);
+            } else {
+                holder.cardView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Toast.makeText(view.getContext(), "Psikolog sedang Offline", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                holder.img_on.setVisibility(View.GONE);
+                holder.img_off.setVisibility(View.VISIBLE);
+            }
         }
 
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(mContext, MessageActivity.class);
-                intent.putExtra("userid", uId);
-                intent.putExtra("username", name);
-                mContext.startActivity(intent);
-            }
-        });
 
         holder.profile_image.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,7 +180,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
                             theLastMessage = chat.getMessage();
                         } else if ((chat.getReceiver().equals(firebaseUser.getUid()) && chat.getSender().equals(userid) ||
                                 chat.getReceiver().equals(userid) && chat.getSender().equals(firebaseUser.getUid())) && message_type.equals("image")) {
-                            theLastMessage = "*Foto*";
+                            theLastMessage = "*Pesan Gambar*";
                         }
                     }
                 }

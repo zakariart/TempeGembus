@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.tempegembus.zakaria.tempegembus">
+
 
     <application
         android:allowBackup="true"
@@ -10,8 +12,10 @@
         android:largeHeap="true"
         android:roundIcon="@mipmap/logo_box"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".ProfilePsikologActivity"></activity>
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning,RtlEnabled"
+        tools:targetApi="p">
+        <activity android:name=".ProfilePsikologActivity"/>
         <activity android:name=".InformedConsentActivity" />
         <activity android:name=".DataSiswaActivity" />
         <activity android:name=".UbahProfilActivity" />
@@ -23,7 +27,8 @@
         <activity android:name=".MainActivity" />
         <activity
             android:name=".ResetPasswordActivity"
-            android:parentActivityName=".LoginActivity" />
+            android:parentActivityName=".LoginActivity"
+            tools:targetApi="jelly_bean" />
         <activity android:name=".SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,7 +38,7 @@
         </activity>
         <activity
             android:name=".LoginActivity"
-            android:parentActivityName=".SplashScreen" />
+            />
         <!--
  FirebaseInstanceIdService performs security checks at runtime,
               no need for explicit permissions despite exported="true"

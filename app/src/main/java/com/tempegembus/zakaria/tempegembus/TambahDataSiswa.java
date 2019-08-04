@@ -54,7 +54,6 @@ public class TambahDataSiswa extends AppCompatActivity {
         email_ortu = findViewById(R.id.email_ortu);
         jenkel_siswa = findViewById(R.id.jenkel_siswa);
         usia_siswa = findViewById(R.id.usia_siswa);
-        nisn = findViewById(R.id.nisn);
         btn_tambah_siswa = findViewById(R.id.btn_tambah_siswa);
 
         final ProgressDialog pd = new ProgressDialog(this);
@@ -65,10 +64,12 @@ public class TambahDataSiswa extends AppCompatActivity {
 
         String[] list = getResources().getStringArray(R.array.gender);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_dropdown_item_1line, list);
 
         jenkel_siswa.setAdapter(adapter);
+
+        auth = FirebaseAuth.getInstance();
 
         btn_tambah_siswa.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,13 +80,14 @@ public class TambahDataSiswa extends AppCompatActivity {
                 String txt_email_ortu = email_ortu.getText().toString();
                 String txt_usia_siswa = usia_siswa.getText().toString();
                 String txt_jenkel_siswa = jenkel_siswa.getText().toString();
-                String txt_nisn = nisn.getText().toString();
 
                 if (TextUtils.isEmpty(txt_nama_siswa) || TextUtils.isEmpty(txt_email_ortu) || TextUtils.isEmpty(txt_usia_siswa) ||
-                        TextUtils.isEmpty(txt_jenkel_siswa) || TextUtils.isEmpty(txt_nisn)) {
+                        TextUtils.isEmpty(txt_jenkel_siswa)) {
+                    pd.dismiss();
                     Toast.makeText(TambahDataSiswa.this, "Semua kolom harus diisi", Toast.LENGTH_SHORT).show();
                 } else {
-                    tambahsiswa(txt_nama_siswa, txt_email_ortu, txt_usia_siswa, txt_jenkel_siswa, txt_nisn);
+//                    email konfirmasi
+                    tambahsiswa(txt_nama_siswa, txt_email_ortu, txt_usia_siswa, txt_jenkel_siswa);
                     pd.dismiss();
                 }
             }
@@ -93,33 +95,32 @@ public class TambahDataSiswa extends AppCompatActivity {
     }
 
     private void tambahsiswa(final String namaSiswa, final String emailOrtu, final String usiaSiswa,
-                             final String jenkelSiswa, final String nisn) {
+                             final String jenkelSiswa) {
 
         DatabaseReference siswaPush = reference.push();
-        String idSiswa = siswaPush.getKey();
+        final String idSiswa = siswaPush.getKey();
 
         fuser = FirebaseAuth.getInstance().getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference("Users").child(fuser.getUid()).child("Siswa");
 
 
-        HashMap<String, String> hashMap = new HashMap<>();
+        HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("idSiswa", idSiswa);
         hashMap.put("namaSiswa", namaSiswa);
         hashMap.put("emailOrtu", emailOrtu);
         hashMap.put("usiaSiswa", usiaSiswa + " Tahun");
         hashMap.put("jenkelSiswa", jenkelSiswa);
-        hashMap.put("nisn", nisn);
+        hashMap.put("statusSiswa", "Belum Konfirmasi");
         hashMap.put("imageURLsiswa", "default");
+        hashMap.put("idPsikolog", "default");
 
 //                            reference.updateChildren(hashMap);
-        reference.push().setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+        reference.child(namaSiswa).updateChildren(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    Intent intent = new Intent(TambahDataSiswa.this, InformedConsentActivity.class);
-//                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                    finish();
+                    Intent intent = new Intent(TambahDataSiswa.this, MainActivity.class);
+                    TambahDataSiswa.this.startActivity(intent);
                 }
             }
         });

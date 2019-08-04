@@ -57,7 +57,8 @@
                 android:layout_marginTop="10dp"
                 android:hint="Usia"
                 android:inputType="number"
-                app:met_floatingLabel="normal" />
+                app:met_floatingLabel="normal"
+                app:met_maxCharacters="2" />
 
             <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
                 android:id="@+id/jenkel_siswa"
@@ -73,6 +74,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:hint="Status"
+                android:visibility="gone"
                 app:met_floatingLabel="normal" />
 
             <Button
@@ -81,6 +83,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:background="@drawable/tombol_kosong"
+                android:foreground="?android:attr/selectableItemBackground"
                 android:text="Simpan"
                 android:textColor="#ffffff"
                 android:textStyle="bold" />

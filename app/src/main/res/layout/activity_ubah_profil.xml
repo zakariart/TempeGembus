@@ -33,14 +33,14 @@
                 android:hint="Nama"
                 app:met_floatingLabel="normal" />
 
-            <com.rengwuxian.materialedittext.MaterialEditText
-                android:id="@+id/email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:hint="Email"
-                android:inputType="textEmailAddress"
-                app:met_floatingLabel="normal" />
+            <!--<com.rengwuxian.materialedittext.MaterialEditText-->
+                <!--android:id="@+id/email"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="10dp"-->
+                <!--android:hint="Email"-->
+                <!--android:inputType="textEmailAddress"-->
+                <!--app:met_floatingLabel="normal" />-->
 
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:id="@+id/ttl"
@@ -87,18 +87,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:hint="Kata Sandi"
-                android:inputType="text"
+                android:inputType="textPassword"
                 app:met_floatingLabel="normal" />
-
-            <com.rengwuxian.materialedittext.MaterialEditText
-                android:id="@+id/re_password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:hint="Ulang Kata Sandi"
-                android:inputType="text"
-                app:met_floatingLabel="normal" />
-
 
             <Button
                 android:id="@+id/btn_ubah"
@@ -106,6 +96,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:background="@drawable/tombol_kosong"
+                android:foreground="?android:attr/selectableItemBackground"
                 android:text="Simpan"
                 android:textColor="#ffffff"
                 android:textStyle="bold" />

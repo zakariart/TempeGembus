@@ -48,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:clickable="false"
-                android:drawableRight="@drawable/ic_action_name"
+                android:drawableEnd="@drawable/ic_action_name"
                 android:focusable="false"
                 android:hint="Tanggal Lahir"
                 android:inputType="date"
@@ -63,20 +63,20 @@
                 app:met_floatingLabel="normal" />
 
             <TextView
+                android:id="@+id/jenis_akun"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
                 android:text="Jenis Akun"
-                android:id="@+id/jenis_akun"
-                android:visibility="gone"
-                android:textColor="@color/common_google_signin_btn_text_light"/>
+                android:textColor="@color/common_google_signin_btn_text_light"
+                android:visibility="gone" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
                 android:text="Jenis Akun"
-                android:textColor="@color/common_google_signin_btn_text_light"/>
+                android:textColor="@color/common_google_signin_btn_text_light" />
 
             <RadioGroup
                 android:id="@+id/radio_group"
@@ -89,14 +89,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="Guru / Orang Tua"
-                    android:textColor="@color/common_google_signin_btn_text_light"/>
+                    android:textColor="@color/common_google_signin_btn_text_light" />
 
                 <RadioButton
                     android:id="@+id/psikolog"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="Psikolog"
-                    android:textColor="@color/common_google_signin_btn_text_light"/>
+                    android:textColor="@color/common_google_signin_btn_text_light" />
             </RadioGroup>
 
             <com.rengwuxian.materialedittext.MaterialEditText
@@ -124,7 +124,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:hint="Kata Sandi"
-                android:inputType="text"
+                android:inputType="textPassword"
                 app:met_floatingLabel="normal" />
 
             <com.rengwuxian.materialedittext.MaterialEditText
@@ -133,9 +133,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:hint="Ulang Kata Sandi"
-                android:inputType="text"
+                android:inputType="textPassword"
                 app:met_floatingLabel="normal" />
-
 
             <Button
                 android:id="@+id/btn_register"
@@ -143,6 +142,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:background="@drawable/tombol_kosong"
+                android:foreground="?android:attr/selectableItemBackground"
                 android:text="Daftar"
                 android:textColor="#ffffff"
                 android:textStyle="bold" />

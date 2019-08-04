@@ -22,11 +22,9 @@ public class SiswaAdapter extends RecyclerView.Adapter<SiswaAdapter.ViewHolder> 
 
     private Context mContext;
     private List<Siswa> mSiswas;
-    String namaSiswa;
+    private String namaSiswa;
 
-    String theLastMessage;
-
-    public SiswaAdapter(Context context, List<Siswa> siswas, String namasiswa){
+    public SiswaAdapter(Context context, List<Siswa> siswas, String namasiswa) {
         mContext = context;
         mSiswas = siswas;
         namaSiswa = namasiswa;
@@ -57,6 +55,11 @@ public class SiswaAdapter extends RecyclerView.Adapter<SiswaAdapter.ViewHolder> 
             Glide.with(mContext).load(siswa.getImageURLSiswa()).into(holder.profile_image_siswa);
         }
 
+        if (siswa.getStatusSiswa().equals("Sudah Konfirmasi")) {
+            holder.img_on.setVisibility(View.VISIBLE);
+            holder.img_off.setVisibility(View.GONE);
+        }
+
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -73,11 +76,11 @@ public class SiswaAdapter extends RecyclerView.Adapter<SiswaAdapter.ViewHolder> 
         return mSiswas.size();
     }
 
-    public  class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         public CardView cardView;
         public TextView nama_siswa;
-        public ImageView profile_image_siswa;
+        public ImageView profile_image_siswa, img_on, img_off;
         private TextView usia_siswa;
 
         public ViewHolder(View itemView) {
@@ -87,6 +90,8 @@ public class SiswaAdapter extends RecyclerView.Adapter<SiswaAdapter.ViewHolder> 
             nama_siswa = itemView.findViewById(R.id.nama_siswa);
             profile_image_siswa = itemView.findViewById(R.id.profile_image_siswa);
             usia_siswa = itemView.findViewById(R.id.usia_siswa);
+            img_on = itemView.findViewById(R.id.img_on);
+            img_off = itemView.findViewById(R.id.img_off);
         }
     }
 }

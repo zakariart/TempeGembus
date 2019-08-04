@@ -1,13 +1,15 @@
 package com.tempegembus.zakaria.tempegembus;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
+
+import com.google.firebase.database.FirebaseDatabase;
 
 public class SplashScreen extends AppCompatActivity {
 
-    private int waktu_loading = 3000;
+    private int waktu_loading = 2000;
 
     //4000=4 detik
 
@@ -15,6 +17,8 @@ public class SplashScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        FirebaseDatabase.getInstance().getReference().keepSynced(true);
 
         setContentView(R.layout.activity_splash_screen);
         new Handler().postDelayed(new Runnable() {

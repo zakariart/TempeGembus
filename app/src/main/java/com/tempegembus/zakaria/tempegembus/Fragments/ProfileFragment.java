@@ -11,7 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,7 +49,7 @@ import static android.app.Activity.RESULT_OK;
 public class ProfileFragment extends Fragment {
 
     CircleImageView image_profile, add_profile_image;
-    ImageView help, about;
+    ImageButton help, about;
     TextView nama, keluar, ubah;
     MaterialEditText email, ttl, jenkel, nip, lokasi;
 
@@ -98,7 +98,7 @@ public class ProfileFragment extends Fragment {
                 lokasi.setText(user.getLokasi());
 
                 if (user.getJenisAkun().equals("psikolog")) {
-                    nip.setFloatingLabelText("SIPP");
+                    nip.setFloatingLabelText("Nomor SIPP");
                 }
 
                 if (user.getImageURL().equals("default")) {

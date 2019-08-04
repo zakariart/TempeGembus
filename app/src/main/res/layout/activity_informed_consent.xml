@@ -11,21 +11,96 @@
         android:id="@+id/toolbar"
         layout="@layout/bar_layout" />
 
-    <TextView
-        android:id="@+id/textView"
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
+        android:layout_marginTop="90dp"
         android:layout_marginEnd="25dp"
-        android:text="@string/informedconsent"
-        android:textAlignment="center"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@id/btn_kirim"
+        android:translationZ="-2dp"
+        app:cardCornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.333"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:layout_constraintVertical_bias="0.51" />
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/relative1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/shadow_background"
+            app:layout_constraintBottom_toBottomOf="@id/card_view2"
+            app:layout_constraintEnd_toEndOf="@id/card_view2"
+            app:layout_constraintStart_toStartOf="@id/card_view2"
+            app:layout_constraintTop_toTopOf="@id/card_view2">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="65dp"
+                android:layout_marginEnd="25dp"
+                android:text="@string/informedconsent"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/nama_siswa"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/nama_siswa"
+                android:textColor="@color/colorAccent"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+            <TextView
+                android:id="@+id/email_ortu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                android:text="@string/email_ortu"
+                android:textAlignment="center"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ke_email" />
+
+            <TextView
+                android:id="@+id/ke_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="ke email"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/nama_siswa" />
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
+
+    <ImageButton
+        android:id="@+id/btn_send"
+        android:layout_width="115dp"
+        android:layout_height="115dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/tombol_ceklis"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
     <Button
         android:id="@+id/btn_kirim"
@@ -35,6 +110,7 @@
         android:layout_marginTop="500dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/tombol_kosong"
+        android:foreground="?android:attr/selectableItemBackground"
         android:text="Kirim"
         android:textColor="#ffffff"
         android:textStyle="bold"
@@ -50,6 +126,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/btn_abu"
+        android:foreground="?android:attr/selectableItemBackground"
         android:text="Kembali"
         android:textColor="#ffffff"
         android:textStyle="bold"

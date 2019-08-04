@@ -19,6 +19,12 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.tempegembus.zakaria.tempegembus.MessageActivity;
 
 public class MyFirebaseMessaging extends FirebaseMessagingService {
+//
+//    @Override
+//    public void onNewToken(String token) {
+//        super.onNewToken(token);
+//        Log.e("Refreshed token:",token);
+//    }
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {

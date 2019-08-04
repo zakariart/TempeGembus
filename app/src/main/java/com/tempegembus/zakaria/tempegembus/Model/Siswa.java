@@ -7,27 +7,27 @@ public class Siswa {
     private String emailOrtu;
     private String usiaSiswa;
     private String jenkelSiswa;
-    private String nisn;
+    private String idPsikolog;
     private String imageURLsiswa;
-//    private String status_siswa;
+    private String statusSiswa;
 
     public Siswa(String idSiswa, String namaSiswa, String emailOrtu, String usiaSiswa, String jenkelSiswa,
-                 String nisn, String imageURLsiswa) {
+                 String idPsikolog, String imageURLsiswa, String statusSiswa) {
         this.idSiswa = idSiswa;
         this.namaSiswa = namaSiswa;
         this.emailOrtu = emailOrtu;
         this.usiaSiswa = usiaSiswa;
         this.jenkelSiswa = jenkelSiswa;
-        this.nisn = nisn;
+        this.idPsikolog = idPsikolog;
         this.imageURLsiswa = imageURLsiswa;
-//        this.status_siswa = status_siswa;
+        this.statusSiswa = statusSiswa;
+    }
+
+    public Siswa() {
     }
 
     public String getIdSiswa() {
         return idSiswa;
-    }
-
-    public Siswa() {
     }
 
     public void setIdSiswa(String idSiswa) {
@@ -36,6 +36,10 @@ public class Siswa {
 
     public String getNamaSiswa() {
         return namaSiswa;
+    }
+
+    public void setNamaSiswa(String namaSiswa) {
+        this.namaSiswa = namaSiswa;
     }
 
     public String getEmailOrtu() {
@@ -50,12 +54,8 @@ public class Siswa {
         return jenkelSiswa;
     }
 
-    public String getNisn() {
-        return nisn;
-    }
-
-    public void setNamaSiswa(String namaSiswa) {
-        this.namaSiswa = namaSiswa;
+    public String getIdPsikolog() {
+        return idPsikolog;
     }
 
     public String getImageURLSiswa() {
@@ -66,12 +66,12 @@ public class Siswa {
         this.imageURLsiswa = imageURLsiswa;
     }
 
-//    public String getStatusSiswa() {
-//        return status_siswa;
-//    }
-//
-//    public void setStatusSiswa(String status_siswa) {
-//        this.status_siswa = status_siswa;
-//    }
+    public String getStatusSiswa() {
+        return statusSiswa;
+    }
+
+    public void setStatusSiswa(String statusSiswa) {
+        this.statusSiswa = statusSiswa;
+    }
 
 }

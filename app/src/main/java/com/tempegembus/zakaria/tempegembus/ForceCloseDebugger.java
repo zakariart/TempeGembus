@@ -1,9 +1,5 @@
 package com.tempegembus.zakaria.tempegembus;
 
-import android.app.Activity;
-
-import com.tempegembus.zakaria.tempegembus.Fragments.ProfileFragment;
-
 /**
  * Created by putuguna on 26/10/16.
  */

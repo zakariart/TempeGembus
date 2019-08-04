@@ -99,31 +99,6 @@ public class RegisterActivity extends AppCompatActivity {
 
         jenkel.setAdapter(adapter);
 
-        //cobacobi
-//        jenkel.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                if (jenkel.getAdapter().toString().equals("Perempuan")) {
-//                    nip.setHint("cewe");
-//                } else if (jenkel.getAdapter().toString().equals("Laki-laki")) {
-//                    nip.setHint("cowo");
-//                }
-//            }
-//        });
-//
-//        jenkel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-//                String mSelectedText = adapterView.getItemAtPosition(position).toString();
-//                int mSelectedId = position;
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> adapterView) {
-//
-//            }
-//        });
-
         radio_group = findViewById(R.id.radio_group);
         radio_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -137,8 +112,8 @@ public class RegisterActivity extends AppCompatActivity {
                         break;
                     case R.id.psikolog:
 //                        Toast.makeText(getApplicationContext(), "hello", Toast.LENGTH_LONG).show();
-                        nip.setHint("SIPP");
-                        nip.setFloatingLabelText("SIPP");
+                        nip.setHint("Nomor SIPP");
+                        nip.setFloatingLabelText("Nomor SIPP");
                         jenis_akun.setText("psikolog");
                         break;
                 }
@@ -148,7 +123,6 @@ public class RegisterActivity extends AppCompatActivity {
         btn_register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pd.show();
 
                 String txt_nama = nama.getText().toString();
                 String txt_email = email.getText().toString();
@@ -163,13 +137,32 @@ public class RegisterActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(txt_nama) || TextUtils.isEmpty(txt_email) || TextUtils.isEmpty(txt_ttl) ||
                         TextUtils.isEmpty(txt_jenkel) || TextUtils.isEmpty(txt_nip) || TextUtils.isEmpty(txt_lokasi) ||
                         TextUtils.isEmpty(txt_password) || TextUtils.isEmpty(txt_re_password)) {
+                    pd.dismiss();
                     Toast.makeText(RegisterActivity.this, "Semua kolom harus diisi", Toast.LENGTH_SHORT).show();
                 } else if (txt_password.length() < 6) {
+                    pd.dismiss();
                     Toast.makeText(RegisterActivity.this, "Kata sandi minimal 6 karakter", Toast.LENGTH_SHORT).show();
-                } else {
+                } else if (!txt_password.equals(txt_re_password)){
+                    Toast.makeText(RegisterActivity.this, "Kata sandi tidak sama", Toast.LENGTH_SHORT).show();
+                } else{
+                    pd.show();
                     register(txt_nama, txt_email, txt_ttl, txt_jenkel, txt_nip, txt_lokasi, txt_password, txt_re_password, txt_jenis_akun);
                     pd.dismiss();
                 }
+            }
+        });
+
+        password.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                password.setMinCharacters(6);
+            }
+        });
+
+        re_password.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                re_password.setMinCharacters(6);
             }
         });
 
@@ -228,8 +221,9 @@ public class RegisterActivity extends AppCompatActivity {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
-//                                                Toast.makeText(RegisterActivity.this, "Registered successfully. Please check your email for verification",
-//                                                        Toast.LENGTH_LONG).show();
+                                                Toast.makeText(RegisterActivity.this, "Registrasi berhasil. Silahkan periksa email anda untuk verifikasi",
+                                                        Toast.LENGTH_LONG).show();
+
                                                 FirebaseUser firebaseUser = auth.getCurrentUser();
                                                 assert firebaseUser != null;
                                                 String userid = firebaseUser.getUid();
@@ -250,17 +244,21 @@ public class RegisterActivity extends AppCompatActivity {
                                                 hashMap.put("search", nama.toLowerCase());
                                                 hashMap.put("jenisAkun", jenis_akun);
 
-                                                reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<Void> task) {
-                                                        if (task.isSuccessful()) {
-                                                            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                            startActivity(intent);
-                                                            finish();
-                                                        }
-                                                    }
-                                                });
+                                                reference.setValue(hashMap);
+                                                userid = "";
+                                                Intent pindahLogin = new Intent(RegisterActivity.this, LoginActivity.class);
+                                                startActivity(pindahLogin);
+//                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                                                    @Override
+//                                                    public void onComplete(@NonNull Task<Void> task) {
+//                                                        if (task.isSuccessful()) {
+//                                                            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+//                                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+//                                                            startActivity(intent);
+//                                                            finish();
+//                                                        }
+//                                                    }
+//                                                });
                                             } else {
                                                 Toast.makeText(RegisterActivity.this, task.getException().getMessage(),
                                                         Toast.LENGTH_LONG).show();
@@ -271,7 +269,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
                         } else {
-                            Toast.makeText(RegisterActivity.this, "You can't register with this email or password", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterActivity.this, "Anda tidak dapat registrasi dengan email atau kata sandi ini", Toast.LENGTH_LONG).show();
                         }
                     }
                 });

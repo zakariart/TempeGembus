@@ -7,241 +7,260 @@
     android:background="@drawable/profil"
     tools:context=".DataSiswaActivity">
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/card_view2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="80dp"
-        android:layout_marginEnd="25dp"
-        app:cardCornerRadius="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <android.support.constraint.ConstraintLayout
-            android:id="@+id/relative1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="@id/card_view2"
-            app:layout_constraintEnd_toEndOf="@id/card_view2"
-            app:layout_constraintStart_toStartOf="@id/card_view2"
-            app:layout_constraintTop_toTopOf="@id/card_view2">
-
-            <com.rengwuxian.materialedittext.MaterialEditText
-                android:id="@+id/nama_siswa"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/relative1"
-                android:layout_marginStart="25dp"
-                android:layout_marginTop="75dp"
-                android:layout_marginEnd="25dp"
-                android:clickable="false"
-                android:focusable="false"
-                android:hint="Nama Anak / Siswa"
-                app:layout_constraintEnd_toEndOf="@id/relative1"
-                app:layout_constraintStart_toStartOf="@id/relative1"
-                app:layout_constraintTop_toTopOf="@id/relative1"
-                app:met_floatingLabel="highlight"
-                app:met_floatingLabelAlwaysShown="true" />
-
-            <com.rengwuxian.materialedittext.MaterialEditText
-                android:id="@+id/email_ortu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="25dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="25dp"
-                android:clickable="false"
-                android:focusable="false"
-                android:hint="Email Orang Tua"
-                app:layout_constraintEnd_toEndOf="@+id/nama_siswa"
-                app:layout_constraintStart_toStartOf="@+id/nama_siswa"
-                app:layout_constraintTop_toBottomOf="@+id/nama_siswa"
-                app:met_floatingLabel="highlight"
-                app:met_floatingLabelAlwaysShown="true" />
-
-            <com.rengwuxian.materialedittext.MaterialEditText
-                android:id="@+id/usia_siswa"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="25dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="25dp"
-                android:clickable="false"
-                android:focusable="false"
-                android:hint="Usia"
-                app:layout_constraintEnd_toEndOf="@+id/nama_siswa"
-                app:layout_constraintStart_toStartOf="@+id/nama_siswa"
-                app:layout_constraintTop_toBottomOf="@+id/email_ortu"
-                app:met_floatingLabel="highlight"
-                app:met_floatingLabelAlwaysShown="true" />
-
-
-            <com.rengwuxian.materialedittext.MaterialEditText
-                android:id="@+id/jenkel_siswa"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="25dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="25dp"
-                android:clickable="false"
-                android:focusable="false"
-                android:hint="Jenis Kelamin"
-                app:layout_constraintEnd_toEndOf="@+id/nama_siswa"
-                app:layout_constraintStart_toStartOf="@+id/nama_siswa"
-                app:layout_constraintTop_toBottomOf="@+id/usia_siswa"
-                app:met_floatingLabel="highlight"
-                app:met_floatingLabelAlwaysShown="true" />
-
-            <com.rengwuxian.materialedittext.MaterialEditText
-                android:id="@+id/nisn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="25dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="25dp"
-                android:layout_marginBottom="25dp"
-                android:clickable="false"
-                android:focusable="false"
-                android:hint="Status"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/nama_siswa"
-                app:layout_constraintStart_toStartOf="@+id/nama_siswa"
-                app:layout_constraintTop_toBottomOf="@+id/jenkel_siswa"
-                app:met_floatingLabel="highlight"
-                app:met_floatingLabelAlwaysShown="true" />
-
-
-        </android.support.constraint.ConstraintLayout>
-
-    </android.support.v7.widget.CardView>
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/profile_image_siswa"
-        android:layout_width="125dp"
-        android:layout_height="125dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="8dp"
-        android:src="@drawable/foto_profil"
-        android:translationZ="2dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/add_profile_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_add_black_36dp"
-        android:translationZ="2dp"
-        app:layout_constraintBottom_toBottomOf="@id/profile_image_siswa"
-        app:layout_constraintEnd_toEndOf="@id/profile_image_siswa" />
-
-    <ImageView
-        android:id="@+id/kembali"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="25dp"
-        android:src="@drawable/tombol_kembali"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/laporan"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="25dp"
-        android:text="Laporan Perkembangan"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/card_view2" />
-
     <android.support.v4.widget.NestedScrollView
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/laporan">
+        app:layout_constraintTop_toTopOf="parent">
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/shadow_background">
+            android:layout_height="match_parent">
 
             <android.support.v7.widget.CardView
-                android:id="@+id/card_view3"
+                android:id="@+id/card_view2"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="25dp"
-                android:layout_marginTop="0dp"
+                android:layout_marginTop="80dp"
                 android:layout_marginEnd="25dp"
-                android:layout_marginBottom="25dp"
                 app:cardCornerRadius="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <android.support.constraint.ConstraintLayout
+                    android:id="@+id/relative1"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:background="@drawable/shadow_background"
+                    app:layout_constraintBottom_toBottomOf="@id/card_view2"
+                    app:layout_constraintEnd_toEndOf="@id/card_view2"
+                    app:layout_constraintStart_toStartOf="@id/card_view2"
+                    app:layout_constraintTop_toTopOf="@id/card_view2">
 
-                    <TextView
-                        android:id="@+id/teks_laporan"
-                        android:layout_width="wrap_content"
+                    <com.rengwuxian.materialedittext.MaterialEditText
+                        android:id="@+id/nama_siswa"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Belum Ada Laporan"
-                        android:textSize="11sp"
+                        android:layout_below="@id/relative1"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="75dp"
+                        android:layout_marginEnd="25dp"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:hint="Nama Anak / Siswa"
+                        app:layout_constraintEnd_toEndOf="@id/relative1"
+                        app:layout_constraintStart_toStartOf="@id/relative1"
+                        app:layout_constraintTop_toTopOf="@id/relative1"
+                        app:met_floatingLabel="highlight"
+                        app:met_floatingLabelAlwaysShown="true" />
+
+                    <com.rengwuxian.materialedittext.MaterialEditText
+                        android:id="@+id/email_ortu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="25dp"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:hint="Email Orang Tua"
+                        app:layout_constraintEnd_toEndOf="@+id/nama_siswa"
+                        app:layout_constraintStart_toStartOf="@+id/nama_siswa"
+                        app:layout_constraintTop_toBottomOf="@+id/nama_siswa"
+                        app:met_floatingLabel="highlight"
+                        app:met_floatingLabelAlwaysShown="true" />
+
+                    <com.rengwuxian.materialedittext.MaterialEditText
+                        android:id="@+id/usia_siswa"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="25dp"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:hint="Usia"
+                        app:layout_constraintEnd_toEndOf="@+id/nama_siswa"
+                        app:layout_constraintStart_toStartOf="@+id/nama_siswa"
+                        app:layout_constraintTop_toBottomOf="@+id/email_ortu"
+                        app:met_floatingLabel="highlight"
+                        app:met_floatingLabelAlwaysShown="true" />
+
+                    <com.rengwuxian.materialedittext.MaterialEditText
+                        android:id="@+id/jenkel_siswa"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="25dp"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:hint="Jenis Kelamin"
+                        app:layout_constraintEnd_toEndOf="@+id/nama_siswa"
+                        app:layout_constraintStart_toStartOf="@+id/nama_siswa"
+                        app:layout_constraintTop_toBottomOf="@+id/usia_siswa"
+                        app:met_floatingLabel="highlight"
+                        app:met_floatingLabelAlwaysShown="true" />
+
+                    <com.rengwuxian.materialedittext.MaterialEditText
+                        android:id="@+id/status_siswa"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="25dp"
+                        android:layout_marginBottom="25dp"
+                        android:clickable="True"
+                        android:focusable="false"
+                        android:hint="Status Siswa"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintEnd_toEndOf="@+id/nama_siswa"
+                        app:layout_constraintStart_toStartOf="@+id/nama_siswa"
+                        app:layout_constraintTop_toBottomOf="@+id/jenkel_siswa"
+                        app:met_floatingLabel="highlight"
+                        app:met_floatingLabelAlwaysShown="true" />
+
 
                 </android.support.constraint.ConstraintLayout>
 
             </android.support.v7.widget.CardView>
 
-            <!--<android.support.v7.widget.CardView-->
-                <!--android:id="@+id/card_view4"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="100dp"-->
-                <!--android:layout_marginStart="25dp"-->
-                <!--android:layout_marginTop="16dp"-->
-                <!--android:layout_marginEnd="25dp"-->
-                <!--android:layout_marginBottom="25dp"-->
-                <!--app:cardCornerRadius="10dp"-->
-                <!--app:layout_constraintBottom_toBottomOf="parent"-->
-                <!--app:layout_constraintEnd_toEndOf="parent"-->
-                <!--app:layout_constraintStart_toStartOf="parent"-->
-                <!--app:layout_constraintTop_toBottomOf="@id/card_view3">-->
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_image_siswa"
+                android:layout_width="125dp"
+                android:layout_height="125dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/foto_profil"
+                android:translationZ="2dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <!--<android.support.constraint.ConstraintLayout-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="match_parent">-->
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/add_profile_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:src="@drawable/ic_add_black_36dp"
+                android:translationZ="2dp"
+                app:layout_constraintBottom_toBottomOf="@id/profile_image_siswa"
+                app:layout_constraintEnd_toEndOf="@id/profile_image_siswa" />
 
-                    <!--<TextView-->
-                        <!--android:id="@+id/teks_laporan2"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="Belum Ada Laporan lagi"-->
-                        <!--android:textSize="11sp"-->
-                        <!--app:layout_constraintBottom_toBottomOf="parent"-->
-                        <!--app:layout_constraintEnd_toEndOf="parent"-->
-                        <!--app:layout_constraintStart_toStartOf="parent"-->
-                        <!--app:layout_constraintTop_toTopOf="parent" />-->
+            <ImageButton
+                android:id="@+id/kembali"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shadow_circle"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:src="@drawable/ic_arrow_back_black_24dp"
+                android:tint="@color/colorPrimaryDark"
+                app:layout_constraintBottom_toTopOf="@id/card_view2"
+                app:layout_constraintStart_toStartOf="@id/card_view2"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <!--</android.support.constraint.ConstraintLayout>-->
+            <ImageButton
+                android:id="@+id/hapus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shadow_circle"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:src="@drawable/ic_delete_forever_black_24dp"
+                android:tint="@color/colorAccent"
+                app:layout_constraintBottom_toTopOf="@id/card_view2"
+                app:layout_constraintEnd_toEndOf="@id/card_view2"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <!--</android.support.v7.widget.CardView>-->
+            <TextView
+                android:id="@+id/laporan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="2dp"
+                android:text="Laporan Perkembangan"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@id/card_view4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/card_view2" />
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/card_view4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="25dp"
+                android:layout_marginBottom="25dp"
+                app:cardCornerRadius="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/laporan">
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shadow_background">
+
+                    <EditText
+                        android:id="@+id/teks_laporan2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="50dp"
+                        android:background="@android:color/transparent"
+                        android:hint="Ketik Laporan..."
+                        android:importantForAutofill="no"
+                        android:inputType="textAutoComplete"
+                        android:textSize="16sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/waktu_laporan2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/tombol_kirim"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                    <ImageButton
+                        android:id="@+id/btn_send"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/tombol_kirim"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                </android.support.constraint.ConstraintLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view_lap"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="25dp"
+                android:layout_marginBottom="25dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/card_view4"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
         </android.support.constraint.ConstraintLayout>
 

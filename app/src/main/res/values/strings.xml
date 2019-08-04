@@ -1,14 +1,15 @@
 <resources>
     <string name="app_name">Tempe Gembus</string>
-    <string name="title_activity_main">MainActivity</string>
     <string name="title_beranda">Beranda</string>
     <string name="title_konseling">Konseling</string>
     <string name="title_profil">Profil</string>
     <string name="keluar"><u>Keluar</u></string>
     <string name="ubah"><u>Ubah Profil</u></string>
     <string name="daftar"><u>Daftar di sini</u></string>
-    <string name="informedconsent">Kami akan mengirimkan lembar persetujuan kepada orang tua dari siswa/anak bernama nama ke email ortu@gmail.com</string>
-
-    <string name="bantuan">Bantuan penggunaan aplikasi</string>
-    <string name="tentang">Tentang aplikasi</string>
+    <string name="informedconsent">Untuk melanjutkan proses tambah data siswa.
+        Kami akan mengirimkan email berupa Informed Consent (Lembar Persetujuan)
+        kepada orang tua dari Anak / Siswa bernama :</string>
+    <string name = "nama_siswa"><i>Nama Anak / Siswa</i></string>
+    <string name="email_ortu"><i><u>Email orang tua</u></i></string>
+    <string name="tentang"><b>TEMPE GEMBUS</b> merupakan aplikasi berbasis mobile yang bisa diakses dan dimanfaatkan oleh guru atau pendamping  untuk melakukan deteksi dan pendampingan secara dini pada siswa yang diindikasikan membutuhkan penanganan khusus terutama terkait dengan belajar mengajar. Aplikasi ini akan menghubungkan guru dengan Psikolog yang dianggap sebagai pihak yang berkompeten dalam deteksi, pengawasan maupun pendampingan siswa berkebutuhan khusus. Interaksi dalam Aplikasi ini memungkinkan para guru mendeteksi secara dini mengenai siswa berkebutuhan khusus sekaligus memonitor keadaan siswa berkebutuhan khusus. Lebih lanjut jika siswa tersebut terindikasi berkebutuhan khusus di dalam kelas, maka dapat didampingi dan diawasi oleh orang tua maupun guru dengan supervisi langsung oleh Psikolog.  </string>
 </resources>

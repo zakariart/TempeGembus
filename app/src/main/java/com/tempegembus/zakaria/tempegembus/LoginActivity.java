@@ -1,6 +1,8 @@
 package com.tempegembus.zakaria.tempegembus;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,6 +19,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.rengwuxian.materialedittext.MaterialEditText;
+
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -35,9 +38,12 @@ public class LoginActivity extends AppCompatActivity {
 
         //check if user is null
         if (firebaseUser != null) {
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
+            if (firebaseUser.isEmailVerified()) {
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
+            }
         }
     }
 
@@ -64,6 +70,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -74,6 +81,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
                 if (TextUtils.isEmpty(txt_email) || TextUtils.isEmpty(txt_password)) {
+                    pd.dismiss();
                     Toast.makeText(LoginActivity.this, "Semua kolom harus diisi", Toast.LENGTH_SHORT).show();
                 } else {
 
@@ -83,10 +91,31 @@ public class LoginActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     pd.dismiss();
                                     if (task.isSuccessful()) {
-                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                        startActivity(intent);
-                                        finish();
+
+                                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                                        if (user.isEmailVerified()) {
+                                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                            startActivity(intent);
+                                            finish();
+                                        } else {
+                                            AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                                            builder.setTitle("Login Gagal");
+                                            builder.setMessage("Akun Anda belum terverifikasi. Silahkan cek email Anda untuk melakukan verifikasi agar Anda bisa log in");
+
+                                            builder.setCancelable(false);
+                                            builder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialogInterface, int i) {
+                                                    dialogInterface.dismiss();
+                                                }
+                                            });
+
+                                            builder.show();
+                                        }
+
+
                                     } else {
                                         Toast.makeText(LoginActivity.this, "Email / Password salah!", Toast.LENGTH_SHORT).show();
                                     }

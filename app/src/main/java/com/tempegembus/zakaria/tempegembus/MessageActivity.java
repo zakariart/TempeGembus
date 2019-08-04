@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -13,9 +14,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.WindowManager;
 import android.webkit.MimeTypeMap;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,7 +51,10 @@ import com.tempegembus.zakaria.tempegembus.Notifications.MyResponse;
 import com.tempegembus.zakaria.tempegembus.Notifications.Sender;
 import com.tempegembus.zakaria.tempegembus.Notifications.Token;
 
+import java.io.ByteArrayOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -60,17 +68,25 @@ public class MessageActivity extends AppCompatActivity {
     CircleImageView profile_image;
     TextView nama;
 
+    //tambahan
+    Bitmap photo;
+    String mCurrentPhotoPath;
+
     FirebaseUser fuser;
     DatabaseReference reference;
+    List<String> listSpinner = new ArrayList<>();
+    Spinner spinner;
 
     ImageButton btn_send, chat_add_btn, btn_attach;
     EditText text_send;
+    TextView text_time;
 
     MessageAdapter messageAdapter;
     List<Chat> mchat;
 
     RecyclerView recyclerView;
 
+    Uri videoUri;
     Intent intent;
 
     ValueEventListener seenListener;
@@ -82,7 +98,8 @@ public class MessageActivity extends AppCompatActivity {
     boolean notify = false;
 
     private static final int GALLERY_PICK = 1;
-    private static final int CAMERA_REQUEST_CODE = 1;
+    private static final int CAMERA_REQUEST_CODE = 0;
+    private static final int VIDEO_REQUEST_CODE = 2;
     private Uri imageUri;
     private StorageTask uploadTask;
 
@@ -93,6 +110,19 @@ public class MessageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
+        }
+
+        spinner = findViewById(R.id.spnTakeCamera);
+        listSpinner.add("");
+        listSpinner.add("Photo");
+        listSpinner.add("Video");
+
+
+        ArrayAdapter adapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, listSpinner);
+        spinner.setAdapter(adapter);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -120,6 +150,7 @@ public class MessageActivity extends AppCompatActivity {
         chat_add_btn = findViewById(R.id.chat_add_btn);
         text_send = findViewById(R.id.text_send);
         btn_attach = findViewById(R.id.btn_attach);
+        text_time = findViewById(R.id.text_time);
 
         intent = getIntent();
         userid = intent.getStringExtra("userid");
@@ -128,9 +159,9 @@ public class MessageActivity extends AppCompatActivity {
         profile_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent startActivity = new Intent(MessageActivity.this, ProfilePsikologActivity.class);
-                startActivity.putExtra("userid", userid);
-//                intent.putExtra("username", name);
+                Intent intent = new Intent(MessageActivity.this, ProfilePsikologActivity.class);
+                intent.putExtra("userid", userid);
+                MessageActivity.this.startActivity(intent);
             }
         });
 
@@ -139,8 +170,17 @@ public class MessageActivity extends AppCompatActivity {
             public void onClick(View view) {
                 notify = true;
                 String msg = text_send.getText().toString();
+
+                Calendar c = Calendar.getInstance();
+                SimpleDateFormat dateformat = new SimpleDateFormat("dd/MM/yy HH:mm");
+                String mydate = dateformat.format(c.getTime());
+
+                text_time.setText(mydate);
+
+                String time = text_time.getText().toString();
+
                 if (!msg.equals("")) {
-                    sendMessage(fuser.getUid(), userid, msg);
+                    sendMessage(fuser.getUid(), userid, msg, time);
                 } else {
                     Toast.makeText(MessageActivity.this, "Pesan tidak boleh kosong!", Toast.LENGTH_SHORT).show();
                 }
@@ -156,9 +196,11 @@ public class MessageActivity extends AppCompatActivity {
             public void onClick(View view) {
                 notify = true;
                 Intent galleryIntent = new Intent();
-                galleryIntent.setType("video/*");
+                galleryIntent.setType("*/*");
                 galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(galleryIntent, "SELECT IMAGE"), GALLERY_PICK);
+
+                startActivityForResult(Intent.createChooser(galleryIntent, "PILIH GAMBAR ATAU VIDEO"), GALLERY_PICK);
+
             }
         });
 
@@ -166,13 +208,41 @@ public class MessageActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 notify = true;
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-                startActivityForResult(Intent.createChooser(intent, "SELECT IMAGE"), GALLERY_PICK);
-
+//                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//
 //                if (intent.resolveActivity(getPackageManager()) != null) {
 //                    startActivityForResult(intent, CAMERA_REQUEST_CODE);
+//
 //                }
+//                dispatchTakePictureIntent();
+//                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+//                startActivityForResult(cameraIntent, CAMERA_REQUEST_CODE);
+                spinner.performClick();
+
+
+//                Intent intent = new Intent(android.provider.MediaStore.ACTION_VIDEO_CAPTURE);
+//                startActivityForResult(intent, CAMERA_REQUEST_CODE);
+
+//                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            }
+        });
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (spinner.getSelectedItemPosition() == 1) {
+                    Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(cameraIntent, CAMERA_REQUEST_CODE);
+
+                } else if (spinner.getSelectedItemPosition() == 2) {
+                    Intent intent = new Intent(android.provider.MediaStore.ACTION_VIDEO_CAPTURE);
+                    startActivityForResult(intent, VIDEO_REQUEST_CODE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
 
@@ -225,7 +295,7 @@ public class MessageActivity extends AppCompatActivity {
         });
     }
 
-    private void sendMessage(String sender, final String receiver, String message) {
+    private void sendMessage(String sender, final String receiver, String message, String time) {
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
 
@@ -235,6 +305,7 @@ public class MessageActivity extends AppCompatActivity {
         hashMap.put("message", message);
         hashMap.put("type", "text");
         hashMap.put("isseen", false);
+        hashMap.put("time", time);
 
         reference.child("Chats").push().setValue(hashMap);
 
@@ -262,6 +333,7 @@ public class MessageActivity extends AppCompatActivity {
                 .child(userid)
                 .child(fuser.getUid());
         chatRefReceiver.child("id").setValue(fuser.getUid());
+
 
         final String msg = message;
 
@@ -295,6 +367,7 @@ public class MessageActivity extends AppCompatActivity {
 
         if (requestCode == GALLERY_PICK && resultCode == RESULT_OK
                 && data != null && data.getData() != null) {
+
             imageUri = data.getData();
 
             final ProgressDialog pd = new ProgressDialog(this);
@@ -324,6 +397,15 @@ public class MessageActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Uri> task) {
 
                         if (task.isSuccessful()) {
+
+                            Calendar c = Calendar.getInstance();
+                            SimpleDateFormat dateformat = new SimpleDateFormat("dd/MM/yy HH:mm");
+                            String mydate = dateformat.format(c.getTime());
+
+                            text_time.setText(mydate);
+
+                            String time = text_time.getText().toString();
+
                             Uri downloadUri = task.getResult();
                             String mUri = downloadUri.toString();
 
@@ -335,6 +417,129 @@ public class MessageActivity extends AppCompatActivity {
                             hashMap.put("message", "" + mUri);
                             hashMap.put("type", "image");
                             hashMap.put("isseen", false);
+                            hashMap.put("time", time);
+
+                            reference.child("Chats").push().setValue(hashMap);
+
+                            pd.dismiss();
+
+                            // add user to chat fragment
+                            final DatabaseReference chatRef = FirebaseDatabase.getInstance().getReference("Chatlist")
+                                    .child(fuser.getUid())
+                                    .child(userid);
+
+                            chatRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    if (!dataSnapshot.exists()) {
+                                        chatRef.child("id").setValue(userid);
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+
+                            final DatabaseReference chatRefReceiver = FirebaseDatabase.getInstance().getReference("Chatlist")
+                                    .child(userid)
+                                    .child(fuser.getUid());
+                            chatRefReceiver.child("id").setValue(fuser.getUid());
+
+                            final String msg = "*Pesan Media*";
+
+                            reference = FirebaseDatabase.getInstance().getReference("Users").child(fuser.getUid());
+                            reference.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    User user = dataSnapshot.getValue(User.class);
+                                    if (notify) {
+                                        sendNotifiaction(userid, user.getNama(), msg);
+                                    }
+                                    notify = false;
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+
+
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Gagal!", Toast.LENGTH_SHORT).show();
+                            pd.dismiss();
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                        pd.dismiss();
+
+                    }
+                });
+            } else {
+                Toast.makeText(this, "Tidak ada gambar terrpilih", Toast.LENGTH_SHORT).show();
+            }
+        } else if (requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK
+        ) {
+            photo = (Bitmap) data.getExtras().get("data");
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            photo.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            submit(photo);
+
+        } else if (requestCode == VIDEO_REQUEST_CODE & resultCode == RESULT_OK) {
+            videoUri = data.getData();
+
+            final ProgressDialog pd = new ProgressDialog(this);
+            pd.setMessage("Uploading");
+            pd.show();
+
+            mImageStorage = FirebaseStorage.getInstance().getReference("message_video");
+
+            if (videoUri != null) {
+                final StorageReference fileReference = mImageStorage.child(System.currentTimeMillis()
+                        + "." + "mp4");
+
+                uploadTask = fileReference.putFile(videoUri);
+
+                uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                    @Override
+                    public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                        if (!task.isSuccessful()) {
+                            throw task.getException();
+                        }
+
+                        return fileReference.getDownloadUrl();
+                    }
+                }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+
+                    @Override
+                    public void onComplete(@NonNull Task<Uri> task) {
+
+                        if (task.isSuccessful()) {
+                            Calendar c = Calendar.getInstance();
+                            SimpleDateFormat dateformat = new SimpleDateFormat("dd/MM/yy HH:mm");
+                            String mydate = dateformat.format(c.getTime());
+
+                            text_time.setText(mydate);
+
+                            String time = text_time.getText().toString();
+
+                            Uri downloadUri = task.getResult();
+                            String mUri = downloadUri.toString();
+
+                            DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+
+                            HashMap<String, Object> hashMap = new HashMap<>();
+                            hashMap.put("sender", fuser.getUid());
+                            hashMap.put("receiver", userid);
+                            hashMap.put("message", "" + mUri);
+                            hashMap.put("type", "image");
+                            hashMap.put("isseen", false);
+                            hashMap.put("time", time);
 
                             reference.child("Chats").push().setValue(hashMap);
 
@@ -385,7 +590,7 @@ public class MessageActivity extends AppCompatActivity {
 
 
                         } else {
-                            Toast.makeText(getApplicationContext(), "Failed!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Gagal!", Toast.LENGTH_SHORT).show();
                             pd.dismiss();
                         }
                     }
@@ -397,9 +602,8 @@ public class MessageActivity extends AppCompatActivity {
                     }
                 });
             } else {
-                Toast.makeText(this, "No image selected", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Tidak ada gambar terrpilih", Toast.LENGTH_SHORT).show();
             }
-
         }
     }
 
@@ -489,6 +693,7 @@ public class MessageActivity extends AppCompatActivity {
         super.onResume();
         status("online");
         currentUser(userid);
+        spinner.setSelection(0);
     }
 
     @Override
@@ -498,4 +703,251 @@ public class MessageActivity extends AppCompatActivity {
         status("offline");
         currentUser("none");
     }
+
+
+    public void submit(Bitmap photo) {
+
+        final ProgressDialog pd = new ProgressDialog(MessageActivity.this);
+        pd.setMessage("Uploading");
+        pd.show();
+
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        photo.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+
+        byte[] b = stream.toByteArray();
+        final String timeNow = String.valueOf(System.currentTimeMillis()) + ".jpg";
+        final StorageReference storageReference = FirebaseStorage.getInstance().getReference("message_foto").child(
+                timeNow);
+
+        UploadTask uploadTask = storageReference.putBytes(b);
+
+        Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+            @Override
+            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                if (!task.isSuccessful()) {
+                    throw task.getException();
+                }
+
+                // Continue with the task to get the download URL
+                return storageReference.getDownloadUrl();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                if (task.isSuccessful()) {
+                    Calendar c = Calendar.getInstance();
+                    SimpleDateFormat dateformat = new SimpleDateFormat("dd/MM/yy HH:mm");
+                    String mydate = dateformat.format(c.getTime());
+
+                    text_time.setText(mydate);
+
+                    String time = text_time.getText().toString();
+
+                    Uri downloadUri = task.getResult();
+
+                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+
+                    HashMap<String, Object> hashMap = new HashMap<>();
+                    hashMap.put("sender", fuser.getUid());
+                    hashMap.put("receiver", userid);
+                    hashMap.put("message", "" + downloadUri);
+                    hashMap.put("type", "image");
+                    hashMap.put("isseen", false);
+                    hashMap.put("time", time);
+
+                    reference.child("Chats").push().setValue(hashMap);
+
+//                    pd.dismiss();
+
+                    // add user to chat fragment
+                    final DatabaseReference chatRef = FirebaseDatabase.getInstance().getReference("Chatlist")
+                            .child(fuser.getUid())
+                            .child(userid);
+
+                    chatRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (!dataSnapshot.exists()) {
+                                chatRef.child("id").setValue(userid);
+                            }
+
+                            pd.dismiss();
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+                    final DatabaseReference chatRefReceiver = FirebaseDatabase.getInstance().getReference("Chatlist")
+                            .child(userid)
+                            .child(fuser.getUid());
+                    chatRefReceiver.child("id").setValue(fuser.getUid());
+
+                    final String msg = "*Foto*";
+
+                    reference = FirebaseDatabase.getInstance().getReference("Users").child(fuser.getUid());
+                    reference.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            User user = dataSnapshot.getValue(User.class);
+                            if (notify) {
+                                sendNotifiaction(userid, user.getNama(), msg);
+                            }
+                            notify = false;
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+                    //                HashMap<String, Object> hashMap = new HashMap<>();
+//                hashMap.put("sender", fuser.getUid());
+//                hashMap.put("receiver", userid);
+//                hashMap.put("message", "" + mUri);
+//                Log.d("CEKURI" , "uri " + mUri);
+//                hashMap.put("type", "image");
+//                hashMap.put("isseen", false);
+//
+//                reference.child("Chats").push().setValue(hashMap);
+//
+//                // add user to chat fragment
+//                final DatabaseReference chatRef = FirebaseDatabase.getInstance().getReference("Chatlist")
+//                        .child(fuser.getUid())
+//                        .child(userid);
+//
+//                chatRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                        if (!dataSnapshot.exists()) {
+//                            chatRef.child("id").setValue(userid);
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                    }
+//                });
+//
+//                final DatabaseReference chatRefReceiver = FirebaseDatabase.getInstance().getReference("Chatlist")
+//                        .child(userid)
+//                        .child(fuser.getUid());
+//                chatRefReceiver.child("id").setValue(fuser.getUid());
+//
+//                final String msg = "*Foto*";
+//
+//                reference = FirebaseDatabase.getInstance().getReference("Users").child(fuser.getUid());
+//                reference.addValueEventListener(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                        User user = dataSnapshot.getValue(User.class);
+//                        if (notify) {
+//                            sendNotifiaction(userid, user.getNama(), msg);
+//                        }
+//                        notify = false;
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                    }
+//                });
+//            }
+//        }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+//                Toast.makeText(MessageActivity.this,"failed",Toast.LENGTH_LONG).show();
+//
+//
+//            }
+//        });
+
+                } else {
+                    pd.dismiss();
+                }
+            }
+        });
+
+        //StorageReference filePath = FirebaseStorage.getInstance().getReference().child("profile_images").child(userID);
+//        storageReference.putBytes(b).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//            @Override
+//            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//
+//
+//                Uri downloadUrl = taskSnapshot.getUploadSessionUri();
+//                Toast.makeText(MessageActivity.this, "uploaded", Toast.LENGTH_SHORT).show();
+//                DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+//
+//
+////                String mUri = downloadUri.toString();
+//
+//                HashMap<String, Object> hashMap = new HashMap<>();
+//                hashMap.put("sender", fuser.getUid());
+//                hashMap.put("receiver", userid);
+//                hashMap.put("message", "" + mUri);
+//                Log.d("CEKURI" , "uri " + mUri);
+//                hashMap.put("type", "image");
+//                hashMap.put("isseen", false);
+//
+//                reference.child("Chats").push().setValue(hashMap);
+//
+//                // add user to chat fragment
+//                final DatabaseReference chatRef = FirebaseDatabase.getInstance().getReference("Chatlist")
+//                        .child(fuser.getUid())
+//                        .child(userid);
+//
+//                chatRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                        if (!dataSnapshot.exists()) {
+//                            chatRef.child("id").setValue(userid);
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                    }
+//                });
+//
+//                final DatabaseReference chatRefReceiver = FirebaseDatabase.getInstance().getReference("Chatlist")
+//                        .child(userid)
+//                        .child(fuser.getUid());
+//                chatRefReceiver.child("id").setValue(fuser.getUid());
+//
+//                final String msg = "*Foto*";
+//
+//                reference = FirebaseDatabase.getInstance().getReference("Users").child(fuser.getUid());
+//                reference.addValueEventListener(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                        User user = dataSnapshot.getValue(User.class);
+//                        if (notify) {
+//                            sendNotifiaction(userid, user.getNama(), msg);
+//                        }
+//                        notify = false;
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                    }
+//                });
+//            }
+//        }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+//                Toast.makeText(MessageActivity.this,"failed",Toast.LENGTH_LONG).show();
+//
+//
+//            }
+//        });
+
+    }
+
+
 }

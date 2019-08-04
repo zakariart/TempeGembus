@@ -56,8 +56,8 @@ public class KonselingFragment extends Fragment {
         toolbar.setTitle("Konseling");
 
         recyclerView = view.findViewById(R.id.recycler_view);
-        recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setHasFixedSize(true);
 
         fuser = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -144,6 +144,7 @@ public class KonselingFragment extends Fragment {
                         }
                     }
                 }
+
                 userAdapter = new UserAdapter(getContext(), mUsers, true, "NamaUser");
                 recyclerView.setAdapter(userAdapter);
             }
